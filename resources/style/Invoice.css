@@ -1,0 +1,153 @@
+@font-face {
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: normal;
+	src: url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap')
+}
+body {
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: white;
+}
+#data {
+    font-size: 12px;
+    margin-left: 10px;
+}
+.fakturaData {
+    font-size: 6px;
+    width: 300px;
+    align-items: center;
+}
+
+.text {
+    font-size: 14px;
+    display: inline-block;
+}
+.value {
+    display: inline-block;
+    font-size: 14px;
+    width: 150px;
+}
+#fakturaInfo {
+    /*position: absolute;*/
+    display: flex;
+    flex-direction: column;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    transform: translateX(-20px) translateY(40px);
+}
+#fakturaInfo h2 {
+    margin: 0;
+    font-size: 18px;
+}
+#fakturaKupSprz {
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+#seller, #buyer {
+    width: 240px;
+}
+#seller h2, #buyer h2{
+    margin-bottom: 0;
+    font-size: 18px;
+}
+#filia{
+    margin-top: 0;
+    font-size: 18px;
+}
+#seller p, #buyer p{
+    margin: 0;
+}
+#fakturaContent, #fakturaSummary {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+#fakturaContent table, #fakturaSummary table {
+    font-size: 12px;
+    width: 100%;
+    border: 1px solid rgba(146, 146, 148, 0.6);
+    align-items: start;
+    border-collapse: collapse;
+}
+#fakturaContent h2, #fakturaSummary h2{
+    font-size: 18px;
+}
+tr:nth-child(even){
+    background-color: #d1d1d1;
+}
+#fakturaContent table tr {
+    border: 1px solid rgba(146, 146, 148, 0.6);
+}
+tr {
+    margin: 5px;
+}
+.lp {
+    width: 40px;
+    text-align: center;
+}
+.nazwa {
+    width: 280px;
+    text-align: left;
+}
+.ilosc {
+    width: 80px;
+    text-align: right;
+}
+.jedn {
+    width: 50px;
+    text-align: center;
+}
+.cjb {
+    text-align: right;
+    width: 70px;
+}
+.wb {
+    text-align: right;
+    width: 70px;
+}
+.vat {
+    text-align: right;
+    width: 50px;
+    padding-right: 10px;
+}
+.summaryVert {
+    height: 20px;
+    width: 120px;
+    text-align: right;
+}
+.summaryVATRate {
+    width: 80px;
+    text-align: center;
+}
+.summaryNetto,.summaryVAT,.summaryBrutto {
+    width: 90px;
+    line-height: 20px;
+    max-width: 90px;
+    text-align: right;
+}
+#fakturaKupSprz p {
+    font-size: 12px;
+}
+.summarySlownie {
+    max-width: 90px;
+    white-space: nowrap;
+    text-align: right;
+    direction: rtl;
+}
+.summarySlownie, .summaryBrutto {
+    padding-right: 10px;
+}
+#podpis {
+    font-size: 13px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    text-align: center;
+}

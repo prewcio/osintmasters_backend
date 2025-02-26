@@ -1,0 +1,27 @@
+{
+    "fredoka one": {
+        "normal": "fredoka_one_normal_901d6f4541a4f20484846282a0ce2b2c"
+    },
+    "inconsolata": {
+        "normal": "inconsolata_normal_7772d587da5e34e2e62c1ae6012d3bf4"
+    },
+    "open sans": {
+        "300": "\/var\/www\/html\/papugarnia-api\/storage\/fonts\/open_sans_300_1d6849e351b30d7d7fb264a1878f4b3a",
+        "normal": "\/var\/www\/html\/papugarnia-api\/storage\/fonts\/open_sans_normal_e3f9da90edb379e243cceabb2fdb3f0a",
+        "600": "open_sans_600_2a60ebfba7bda514848a0bbbd15b621a",
+        "800": "\/var\/www\/html\/papugarnia-api\/storage\/fonts\/open_sans_800_ff3fba9a9fc2a96112903cfc411756fd"
+    },
+    "quicksand": {
+        "300": "\/var\/www\/html\/papugarnia-api\/storage\/fonts\/quicksand_300_0478f1ff81c1da345c22a855c2eb6510",
+        "normal": "\/var\/www\/html\/papugarnia-api\/storage\/fonts\/quicksand_normal_cdecf9ad94c57979fa246685c91b4172",
+        "bold": "quicksand_bold_7b2b025aadd9b4d2203f28294b1ea403"
+    },
+    "roboto": {
+        "100": "\/var\/www\/html\/papugarnia-api\/storage\/fonts\/roboto_100_1c4e32da7e6c8539dd3a51af38f413be",
+        "normal": "\/var\/www\/html\/papugarnia-api\/storage\/fonts\/roboto_normal_7bc701b343c10631f60048716b96e4f7",
+        "bold": "roboto_bold_8db5cb5d0586c1e891426d13097b1d04"
+    },
+    "varela round": {
+        "normal": "varela_round_normal_0064d4a3bbbb89fa9e146b5b67e0fab7"
+    }
+}
