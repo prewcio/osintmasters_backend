@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Mail\WelcomeNewUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -25,7 +26,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'role' => 'required|in:admin,user',
+            'role' => 'required|string|in:user,admin',
             'avatar' => 'nullable|image|max:1024',
         ]);
 
@@ -45,16 +46,18 @@ class UserController extends Controller
             'avatar' => $avatarPath,
         ]);
 
-        // Send welcome email with password
-        Mail::send('emails.welcome', [
-            'user' => $user,
-            'password' => $password
-        ], function($message) use ($user) {
-            $message->to($user->email)
-                    ->subject('Welcome to ' . config('app.name'));
-        });
+        try {
+            // Send welcome email
+            Mail::to($user->email)->send(new WelcomeNewUser($user->name, $user->email, $password));
+        } catch (\Exception $e) {
+            // Log the error but don't fail the request
+            \Log::error('Failed to send welcome email: ' . $e->getMessage());
+        }
 
-        return response()->json($user, 201);
+        return response()->json([
+            'message' => 'User created successfully',
+            'user' => $user
+        ], 201);
     }
 
     public function update(Request $request, User $user)

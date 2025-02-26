@@ -72,8 +72,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('meetings', MeetingController::class);
 
     // Chat
-    Route::get('chat/messages', [ChatController::class, 'index']);
-    Route::post('chat/messages', [ChatController::class, 'store']);
+    Route::get('/chat/messages', [ChatController::class, 'index'])->name('chat.messages');
+    Route::post('/chat/message', [ChatController::class, 'store'])->name('chat.message');
+    Route::get('chat/stream', [ChatController::class, 'stream']);
 
     // Materials
     Route::post('/materials', [MaterialController::class, 'store']);
@@ -119,6 +120,6 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     // Messages
-    Route::get('/messages', [MessageController::class, 'index']);
-    Route::post('/messages', [MessageController::class, 'store']);
+    Route::get('/chat/messages', [MessageController::class, 'index']);
+    Route::post('/chat/messages', [MessageController::class, 'store']);
 });
