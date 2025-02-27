@@ -26,7 +26,7 @@ class PollController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'is_active' => 'required|boolean',
+            'active' => 'required|boolean',
             'expires_at' => 'nullable|date|after:now',
             'is_system_post' => 'boolean',
             'questions' => 'required|array|min:1',
@@ -47,7 +47,7 @@ class PollController extends Controller
             $poll = Poll::create([
                 'title' => $validated['title'],
                 'description' => $validated['description'],
-                'is_active' => $validated['is_active'],
+                'is_active' => $validated['active'],
                 'expires_at' => $validated['expires_at'] ?? null,
                 'is_system_post' => $validated['is_system_post'] ?? false,
                 'created_by' => $request->user()->id
