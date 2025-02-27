@@ -33,32 +33,84 @@ class MaterialController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'type' => 'required|in:video,file',
-            'file' => 'required|file|max:102400', // 100MB max
+            'file' => 'required',
             'file_type' => 'required_if:type,file|string|max:255',
+            'chunk' => 'required|integer',
+            'chunks' => 'required|integer',
+            'chunk_size' => 'required|integer',
+            'total_size' => 'required|integer',
+            'mime_type' => 'required|string'
         ]);
 
-        $file = $request->file('file');
-        $extension = $file->getClientOriginalExtension();
-        $fileName = Str::slug(pathinfo($validated['title'], PATHINFO_FILENAME)) . '-' . time() . '.' . $extension;
-        
-        // Move file to the appropriate directory
-        if ($validated['type'] === 'video') {
-            $file->move(public_path('videos'), $fileName);
-            $path = 'videos/' . $fileName;
-        } else {
-            $file->move(public_path('files'), $fileName);
-            $path = 'files/' . $fileName;
+        try {
+            $chunk = $request->file('file');
+            $chunk_number = $validated['chunk'];
+            $total_chunks = $validated['chunks'];
+            $fileName = Str::slug(pathinfo($validated['title'], PATHINFO_FILENAME)) . '-' . time();
+            
+            // Determine file extension from mime type
+            $extension = str_contains($validated['mime_type'], 'video') ? 'mp4' : 'pdf';
+            $fileName .= '.' . $extension;
+
+            // Determine target directory
+            $targetDir = $validated['type'] === 'video' ? $this->videosPath : $this->filesPath;
+            $targetPath = $targetDir . '/' . $fileName;
+            $tempPath = $targetDir . '/temp_' . $fileName . '_' . $chunk_number;
+
+            // Create target directory if it doesn't exist
+            if (!file_exists($targetDir)) {
+                mkdir($targetDir, 0777, true);
+            }
+
+            // Move the chunk to temporary location
+            move_uploaded_file($chunk->getPathname(), $tempPath);
+
+            // If this is the last chunk, combine all chunks
+            if ($chunk_number == $total_chunks - 1) {
+                $out = fopen($targetPath, "wb");
+
+                if ($out) {
+                    for ($i = 0; $i < $total_chunks; $i++) {
+                        $tempChunkPath = $targetDir . '/temp_' . $fileName . '_' . $i;
+                        if (file_exists($tempChunkPath)) {
+                            $in = fopen($tempChunkPath, "rb");
+                            if ($in) {
+                                while ($buff = fread($in, 4096)) {
+                                    fwrite($out, $buff);
+                                }
+                                fclose($in);
+                                unlink($tempChunkPath);
+                            }
+                        }
+                    }
+                    fclose($out);
+
+                    $relativePath = $validated['type'] === 'video' ? 'videos/' . $fileName : 'files/' . $fileName;
+
+                    $material = Material::create([
+                        'title' => $validated['title'],
+                        'type' => $validated['type'],
+                        'src' => $relativePath,
+                        'file_type' => $extension,
+                        'created_by' => $request->user()->id,
+                    ]);
+
+                    return response()->json($material->load('creator'), 201);
+                }
+            }
+
+            return response()->json(['message' => 'Chunk uploaded successfully'], 200);
+
+        } catch (\Exception $e) {
+            // Clean up any temporary files in case of error
+            for ($i = 0; $i < $total_chunks; $i++) {
+                $tempPath = $targetDir . '/temp_' . $fileName . '_' . $i;
+                if (file_exists($tempPath)) {
+                    unlink($tempPath);
+                }
+            }
+            throw $e;
         }
-
-        $material = Material::create([
-            'title' => $validated['title'],
-            'type' => $validated['type'],
-            'src' => $path,
-            'file_type' => $extension,
-            'created_by' => $request->user()->id,
-        ]);
-
-        return response()->json($material->load('creator'), 201);
     }
 
     public function show(Material $material)
