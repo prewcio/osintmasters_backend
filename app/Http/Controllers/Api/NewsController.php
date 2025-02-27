@@ -35,7 +35,7 @@ class NewsController extends Controller
         
         return News::with(['user:id,name'])
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->get();
     }
 
     public function store(Request $request)

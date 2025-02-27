@@ -15,7 +15,7 @@ class PollController extends Controller
 {
     public function index()
     {
-        return Poll::with(['creator', 'questions.options'])->latest()->paginate(10);
+        return Poll::with(['creator', 'questions.options'])->latest()->get();
     }
 
     public function store(Request $request)

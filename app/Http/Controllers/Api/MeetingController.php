@@ -12,7 +12,7 @@ class MeetingController extends Controller
     {
         return Meeting::with('creator')
             ->orderBy('date')
-            ->paginate(10);
+            ->get();
     }
 
     public function store(Request $request)

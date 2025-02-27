@@ -11,14 +11,14 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Message;
 use App\Models\ChatMessage;
 use App\Events\NewChatMessage;
+use App\Models\User;
 
 class PollController extends Controller
 {
     public function index()
     {
-        return Poll::with(['questions.options', 'creator'])
-            ->latest()
-            ->paginate(10);
+        $this->authorize('viewAny', User::class);
+        return Poll::with(['creator', 'questions.options'])->latest()->get();
     }
 
     public function store(Request $request)

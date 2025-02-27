@@ -23,7 +23,7 @@ class MaterialController extends Controller
 
     public function index()
     {
-        return Material::with('creator')->latest()->paginate(10);
+        return Material::with('creator')->latest()->get();
     }
 
     public function store(Request $request)

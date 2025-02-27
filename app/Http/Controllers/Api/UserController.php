@@ -13,7 +13,7 @@ class UserController extends Controller
     public function index()
     {
         $this->authorize('viewAny', User::class);
-        return User::paginate(10);
+        return User::all();
     }
 
     public function all()
@@ -64,16 +64,7 @@ class UserController extends Controller
             'name' => 'sometimes|string|max:255',
             'email' => 'sometimes|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'sometimes|string|min:8',
-            'role' => 'sometimes|in:admin,user',
-            'avatar' => 'sometimes|nullable|image|max:1024',
         ]);
-
-        if ($request->hasFile('avatar')) {
-            if ($user->avatar) {
-                Storage::disk('public')->delete($user->avatar);
-            }
-            $validated['avatar'] = $request->file('avatar')->store('avatars', 'public');
-        }
 
         if (isset($validated['password'])) {
             $validated['password'] = Hash::make($validated['password']);
@@ -81,7 +72,10 @@ class UserController extends Controller
 
         $user->update($validated);
 
-        return response()->json($user);
+        return response()->json([
+            'message' => 'User updated successfully',
+            'user' => $user
+        ]);
     }
 
     public function destroy(User $user)
